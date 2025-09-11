@@ -2,17 +2,46 @@ import React, { useEffect, useState,useRef } from "react";
 import { assets } from "../assets/assets";
 import { useAppContext } from "../context/AppContext";
 import Message from "./Message";
+import toast from "react-hot-toast";
 const Chatbox = () => {
   const containerRef=useRef(null);
-  const { selectedChat, theme } = useAppContext();
+  const { selectedChat, theme,user,axios,token,setUser } = useAppContext();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [prompt, setPrompt] = useState("");
-  const [mode, setMode] = useState("");
+  const [mode, setMode] = useState("text");
   const [isPublished, setIsPublished] = useState(false);
 
   const onSubmit = async (e) => {
-    e.preventDefault();
+   
+    try {
+       e.preventDefault();
+       if(!user){
+        return toast("login to send message");
+       }
+       const promptCopy=prompt;
+       setLoading(true);   
+       setPrompt("");
+       setMessages(prev=>[...prev,{role:"user",content:prompt,timestamp:Date.now(),isImage:false}]);
+
+       const {data}=await axios.post(`/api/message/${mode}`,{chatId:selectedChat._id,prompt,isPublished},{headers:{Authorization:token}});
+       if(data.success){
+        setMessages(prev=>[...prev,data.reply]);
+        if(mode==="image"){
+          setUser(prev=>({...prev,credits:prev.credits-2}));
+        }else{
+           setUser(prev=>({...prev,credits:prev.credits-1}));
+        }
+       }else{
+        toast.error(data.message);
+        setPrompt(promptCopy);
+       }
+    } catch (error) {
+      toast.error(error.message);
+    }finally{
+      setPrompt("");
+      setLoading(false);
+    }
   };
   useEffect(() => {
     if (selectedChat) {
@@ -58,7 +87,7 @@ const Chatbox = () => {
       </div>
       {mode==="image" &&(<label className="inline-flex items-center gap-2 mb-3 text-sm mx-auto">
         <p className="text-xs">Publish Generated Image to Community</p>
-        <input type="checkbox" className="cursor-pointer"  checked={isPublished} onChange={(e)=>(setIsPublished(e.target.value))} />
+        <input type="checkbox" className="cursor-pointer"  checked={isPublished} onChange={(e)=>(setIsPublished(e.target.checked))} />
       </label>)}
       {/* Prompt Input Box */}
       <form onSubmit={onSubmit} className="bg-primary/20 dark:[#583C79]/30 border border-primary dark:border-[#80609F]/30 rounded-full w-full max-w-2xl p-3 pl-4 mx-auto flex gap-4 items-center">

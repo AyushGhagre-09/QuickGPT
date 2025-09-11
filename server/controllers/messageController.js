@@ -48,6 +48,8 @@ export const imageMessageController = async (req, res) => {
             return res.json({ success: false, message: "You don't have enough credits to use this feature" });
         }
         const { prompt, chatId, isPublished } = req.body;
+        console.log(req.body);
+        // return res.send("succcess");
         const chat = await Chat.findOne({ userId, _id: chatId });
         if (!chat) {
             return res.json({ success: false, message: "Chat not found" });
