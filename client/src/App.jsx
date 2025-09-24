@@ -11,8 +11,8 @@ import Login from "./pages/Login";
 import { useAppContext } from "./context/AppContext";
 import {Toaster} from "react-hot-toast";
 const App = () => {
-  const { user } = useAppContext();
-  const [isMenuOpen, setIsMenuOpen,loadingUser] = useState(false);
+  const { user,loadingUser } = useAppContext();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { pathname } = useLocation();
   if (pathname === "/loading" ||loadingUser) {
     return <Loading />;
