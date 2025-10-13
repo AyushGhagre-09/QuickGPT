@@ -54,7 +54,6 @@ export const AppContextProvider = ({ children }) => {
         setChats(data.chats);
         if (data.chats.length === 0) {
           await createNewChat();
-          return fetchUserChats();
         } else {
           setSelectedChat(data.chats[0]);
         }
