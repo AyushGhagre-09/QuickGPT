@@ -4,6 +4,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import Chatbox from "./components/Chatbox";
 import Credits from "./pages/Credits";
 import Community from "./pages/Community";
+import RedView from "./pages/RedView";
 import { assets } from "./assets/assets";
 import "./assets/prism.css";
 import Loading from "./pages/Loading";
@@ -35,6 +36,7 @@ const App = () => {
               <Route path="/" element={<Chatbox />} />
               <Route path="/credits" element={<Credits />} />
               <Route path="/community" element={<Community />} />
+              <Route path="/redview" element={<RedView />} />
             </Routes>
           </div>
         </div>

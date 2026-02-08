@@ -130,6 +130,21 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
           <p>Community Images</p>
         </div>
       </div>
+      <div
+        onClick={() => {
+          navigate("/redview");
+          setIsMenuOpen(false);
+        }}
+        className="flex items-center gap-2 p-3 mt-4 border border-red-200 dark:border-red-500/40 rounded-md cursor-pointer hover:scale-103 transition-all"
+      >
+        <span className="h-2.5 w-2.5 rounded-full bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.6)]"></span>
+        <div className="flex flex-col text-sm">
+          <p className="text-red-700 dark:text-red-100">Red View</p>
+          <p className="text-xs text-red-500/70 dark:text-red-200/70">
+            Focused red palette
+          </p>
+        </div>
+      </div>
       {/* Credits Purchases Option */}
       <div
         onClick={() => {
